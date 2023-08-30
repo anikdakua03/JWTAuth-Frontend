@@ -114,7 +114,7 @@ const Registration = () => {
   return (
     <>
       {success ? (<section>
-        <h1 className='text-3xl text-amber-300'>Registration successful, please verufy your email from your email</h1>
+        <h1 className='text-3xl text-amber-300'>Registration successful, please verify your email from your email</h1>
         <a href='/login'>Log in now</a>
       </section>)
         : (
@@ -162,7 +162,7 @@ const Registration = () => {
                   </div>
 
                   <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" for="password">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                       Password
 
                       {/* <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} /> */}

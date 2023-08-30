@@ -1,17 +1,22 @@
 
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, {useEffect, useRef, useState } from 'react'
 import Registration from './Registration';
 import axios from '../services/AxiosServices';
-import AuthContext from '../context/AuthProvider'
+import useAuth from '../hooks/useAuth';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-// const LOGIN_URL = 'http://localhost:5121/api/Authentication/Login';
+
 const LOGIN_URL = '/Authentication/Login'
 
 
 const Login = () => {
 
-  const {setAuth} = useContext(AuthContext);
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate(); // will take to a page
+  const location = useLocation(); // gets pages location
+  const from = location.state?.from?.pathname || "/homepageuser";
 
   const emailRef = useRef();
   const errRef = useRef();
@@ -20,7 +25,7 @@ const Login = () => {
   const [pwd, setPwd] = useState('');
 
   const [errMsg, setErrMsg] = useState('');
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     emailRef.current.focus();
@@ -54,15 +59,16 @@ const Login = () => {
         }
       );
       console.log(JSON.stringify(response.data));
-      // console.log(response.data.token);
-      
       const accessToken = response?.data?.token;
-      setAuth({email, pwd, accessToken});
+      const roles = response?.data?.roles;
+      setAuth({email, pwd, roles, accessToken});
 
       // then also have to clear input field from registration 
       setEmail('');
       setPwd('');
-      setSuccess(true);
+      // after successful login it  will navagte t next page , wher it wants
+      navigate(from, { replace: true }); 
+      // setSuccess(true);
     }
     catch (error) {
       if (!error) {
@@ -70,7 +76,7 @@ const Login = () => {
       }
       else if (error.response?.status === 400) {
 
-        setErrMsg("Something is missing");
+        setErrMsg("");
       }
       else if (error.response?.status === 401) {
 
@@ -78,6 +84,7 @@ const Login = () => {
       }
       // generic error avoiadble here
       else {
+        setErrMsg(error?.response.errors);
         setErrMsg("Invalid credentials, try again !!");
       }
       errRef.current.focus();
@@ -85,12 +92,17 @@ const Login = () => {
   }
 
   return (
-    <>
-      {success ? (<section>
-        <h1 className='text-3xl text-amber-300'>Log in successful !!!</h1>
-        <a href='/'>Home Page</a>
-      </section>)
-        : (
+    // <>
+    // {
+    //   success?(
+    //             <section>
+    //                 <h1>You are logged in!</h1>
+    //                 <br />
+    //                 <p>
+    //                     <a href="/homepage">Go to Home</a>
+    //                 </p>
+    //             </section >
+    //         ) : (
           <section>
             <section>
               <p ref={errRef} className={errMsg ? "errMsg" : "offScreen"} aria-live="assertive">{errMsg}</p>
@@ -146,9 +158,8 @@ const Login = () => {
                   </span>
               </div>
             </div>
-          </section>
-        )}
-    </>
+      </section>
+            //  )}</>
   )
 }
 
