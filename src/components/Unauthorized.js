@@ -6,7 +6,7 @@ const Unauthorized = () => {
     const goBack = () => navigate(-1);
 
     return (
-        <section>
+        <section className="dark:bg-slate-800">
             <h1 className="text-center text-8xl text-red-700 font-bold">Unauthorized</h1>
             <br />
             <p className="text-center text-4xl text-yellow-300 font-bold">You do not have access to the requested page.</p>

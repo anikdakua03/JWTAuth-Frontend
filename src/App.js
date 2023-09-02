@@ -11,6 +11,7 @@ import Admin from './components/Admin';
 import Management from './components/Management';
 import LinkPage from './components/LinkPage';
 import HomePageUser from './components/HomePageUser';
+import ResetPassword from './components/ResetPassword';
 
 const ROLES = {
   0: 'User',
@@ -22,7 +23,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<Layout/>}>
+      <Route path="/" basename="homepage" element={<Layout/>}>
         {/* public routes */}
         <Route path="homepage" exact element={<HomePage />} />
         <Route path="login"  element={<Login />} />
@@ -35,9 +36,13 @@ function App() {
           <Route path="homepageuser" element={<HomePageUser />} />
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={[ROLES[1]]} />}>
+        {/* <Route element={<RequireAuth  />}> */}
+          <Route path="reset-password" element={<ResetPassword />} />
+        {/* </Route> */}
+
+        {/* <Route element={<RequireAuth allowedRoles={[ROLES[1]]} />}> */}
           <Route path="admin" element={<Admin />} />
-        </Route>
+        {/* </Route> */}
 
         <Route element={<RequireAuth allowedRoles={[ROLES[2]]} />}>
           <Route path="management" element={<Management />} />

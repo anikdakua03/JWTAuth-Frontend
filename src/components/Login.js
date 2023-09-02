@@ -16,7 +16,7 @@ const Login = () => {
 
   const navigate = useNavigate(); // will take to a page
   const location = useLocation(); // gets pages location
-  const from = location.state?.from?.pathname || "/homepageuser";
+  const from = location.state?.from?.pathname || "/";
 
   const emailRef = useRef();
   const errRef = useRef();
@@ -68,7 +68,6 @@ const Login = () => {
       setPwd('');
       // after successful login it  will navagte t next page , wher it wants
       navigate(from, { replace: true }); 
-      // setSuccess(true);
     }
     catch (error) {
       if (!error) {
@@ -92,17 +91,8 @@ const Login = () => {
   }
 
   return (
-    // <>
-    // {
-    //   success?(
-    //             <section>
-    //                 <h1>You are logged in!</h1>
-    //                 <br />
-    //                 <p>
-    //                     <a href="/homepage">Go to Home</a>
-    //                 </p>
-    //             </section >
-    //         ) : (
+
+      <div className='dark:bg-slate-800'>
           <section>
             <section>
               <p ref={errRef} className={errMsg ? "errMsg" : "offScreen"} aria-live="assertive">{errMsg}</p>
@@ -159,6 +149,7 @@ const Login = () => {
               </div>
             </div>
       </section>
+      </div>
             //  )}</>
   )
 }
